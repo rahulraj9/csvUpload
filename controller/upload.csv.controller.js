@@ -14,7 +14,8 @@ const uploadCsv = (req, res) => {
 
   const results = [];
   const filePath = req.file.path;
-
+	const uploadedFileName = req.file.originalname; // Get the original filename with extension
+  const uploadedName = req.body.name || uploadedFileName.replace('.csv', ''); // Use the provided name or the filename without .csv
   fs.createReadStream(filePath)
     .pipe(csv())
     .on('headers', (headers) => {
@@ -37,14 +38,30 @@ const uploadCsv = (req, res) => {
 
       try {
         // Save CSV data to the database
-        await Csv.create({ data: jsonData });
-        res.status(200).json({ message: 'File uploaded and saved to the database' });
+				await Csv.create({ name: uploadedName, data: jsonData });
+        // res.status(200).json({ message: 'File uploaded and saved to the database' });
+				res.json({ message: 'File uploaded and saved to the database' });
       } catch (error) {
         res.status(500).json({ message: 'Internal server error', error: error.message });
       }
     });
 };
+const listUploadedCsvFiles = async (req, res) => {
+  try {
+    const uploadedFiles = await Csv.find({}, 'name createdAt'); // Retrieve names and creation dates
+
+    res.status(200).json({ message: 'List of uploaded CSV files', data: uploadedFiles });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
+
+const getHomePage = (req, res) => {
+  res.render('home'); // Render the home.ejs template
+};
 
 module.exports = {
   uploadCsv,
+	listUploadedCsvFiles,
+	getHomePage
 };
