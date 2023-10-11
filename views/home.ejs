@@ -7,125 +7,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSV File Upload</title>
     <style>
-      /* Apply CSS styles to the entire page */
+
+      /* Improved design for the page */
       body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
         margin: 0;
         padding: 0;
-      }
-
-      /* Header styles */
-      h1 {
-        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       h2 {
-        color: #555;
+        text-align: center;
+        margin: 20px 0;
+        color: #333;
       }
 
-      /* Form styles */
       form {
         background-color: #fff;
         padding: 20px;
         margin: 20px 0;
         border-radius: 5px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        width: 400px;
       }
 
-      label {
-        display: block;
-        margin-bottom: 10px;
-        color: #333;
+      #searchContainer {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
       }
 
-      input[type="file"],
-      input[type="text"] {
-        width: 100%;
+      /* Style for the search button */
+      #searchButton {
+        background-color: #478c9c;
+        color: #fff;
+        border: none;
         padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
         border-radius: 3px;
+        cursor: pointer;
         font-size: 16px;
       }
 
-      input[type="submit"] {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 18px;
+      #searchButton:hover {
+        background-color: #478C5F;
       }
 
-      input[type="submit"]:hover {
-        background-color: #0056b3;
+      /* Style for the search input box */
+      #searchInput {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 16px;
+        width: 70%;
+        margin-left: 10px;
       }
 
       /* Table styles */
+      .table-container {
+        max-height: 300px; /* Set the maximum height as per your requirements */
+        overflow: auto;
+      }
       table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+      table thead {
+        position: sticky;
+        top: 0;
+        background-color: #f2f2f2;
       }
 
       th,
       td {
         border: 1px solid #ddd;
-        padding: 10px; /* Increase padding for better readability */
+        padding: 10px;
         text-align: left;
       }
 
       th {
-        background-color: #f2f2f2;
-      }
-
-      /* Adjust the width of specific columns */
-      td:first-child,
-      th:first-child {
-        width: 40%; /* Adjust as needed */
-      }
-
-      td:nth-child(2),
-      th:nth-child(2) {
-        width: 60%; /* Adjust as needed */
-      }
-
-      /* Popup styles */
-      #popup-message {
-        display: none;
-        background-color: #007bff;
-        color: #fff;
-        padding: 15px;
-        text-align: center;
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 999;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      }
-
-      #popup-text {
-        margin: 0;
-      }
-
-      #ok-button {
-        background-color: #fff;
-        color: #007bff;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 10px;
-      }
-      h2 {
-        text-align: center;
-      }
-
-      #ok-button:hover {
         background-color: #f2f2f2;
       }
     </style>
@@ -147,7 +113,7 @@
     <!-- Table to display the list of uploaded CSV files -->
     <h2>List of Uploaded CSV Files</h2>
     <!-- Add a search input and button above the table -->
-    <div>
+    <div id="searchContainer">
       <input
         type="text"
         id="searchInput"
@@ -156,7 +122,7 @@
       />
       <button id="searchButton">Search</button>
     </div>
-
+    <div class="table-container">
     <table>
       <thead>
         <tr>
@@ -168,7 +134,7 @@
         <!-- Data will be populated here using JavaScript -->
       </tbody>
     </table>
-
+  </div>
     <!-- JavaScript to handle the popup and populate the table -->
     <script>
       // JavaScript to handle the form submission
