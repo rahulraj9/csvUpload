@@ -1,0 +1,175 @@
+<!-- views/csv-data.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSV Data</title>
+    <style>
+      /* Reset some default styles */
+      body,
+      h2 {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Apply CSS styles to the entire page */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+      }
+
+      /* Container for the table */
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
+
+      /* Table styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Add some colorful styles for headers and rows */
+      th {
+        background-color: #3498db; /* Header background color */
+        color: #fff; /* Header text color */
+      }
+
+      td {
+        background-color: #ecf0f1; /* Row background color */
+      }
+
+      /* Add hover effect for table rows */
+      tr:hover {
+        background-color: #d5dbdb;
+      }
+
+      /* Style the container header */
+      .container h2 {
+        background-color: #3498db; /* Header background color */
+        color: #fff; /* Header text color */
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+      }
+      h2 {
+        text-align: center;
+        text-shadow: #3498db;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Table to display CSV data -->
+    <h2>Table id: <%= fileId %></h2>
+    <table>
+      <thead>
+        <!-- Table headers will be populated dynamically -->
+      </thead>
+      <tbody>
+        <!-- Table data will be populated dynamically -->
+      </tbody>
+    </table>
+
+    <!-- JavaScript to populate the table with CSV data -->
+    <script>
+      const apiId = "<%= fileId %>";
+      // Reference to the table body and thead elements
+      const tableBody = document.querySelector("tbody");
+      const tableHeader = document.querySelector("thead");
+      const apidata = fetch(`/csv/view/${apiId}`)
+        .then((response) => response.json())
+        .then((dataFromAPI) => {
+          // Handle the API response data here
+          let headers;
+          const csvData = dataFromAPI.csv.data;
+          if (dataFromAPI) {
+            // Extract headers
+
+           
+
+            if (dataFromAPI.csv.data.headers.length > 1) {
+              headers = dataFromAPI.csv.data.headers.map((ele) => {
+                console.log("here", ele);
+                return ele;
+              });
+            } else {
+              const headersString = dataFromAPI.csv.data.headers[0];
+              headers = headersString.split(";");
+              console.log(headers);
+            }
+
+            // Create the header row
+            const headerRow = document.createElement("tr");
+            // Iterate through the headers and create table header cells
+            headers.forEach((headerText) => {
+              const headerCell = document.createElement("th");
+              headerCell.textContent = headerText;
+              headerRow.appendChild(headerCell);
+            });
+            // Append the header row to the table header
+            tableHeader.appendChild(headerRow);
+          }
+
+          // Extract and populate the table body with data rows
+          csvData.data.forEach((rowData) => {
+            console.log("roe", rowData.URN);
+            const tableRow = document.createElement("tr");
+
+            // Split the row data by semicolon and create table cells
+
+            if (dataFromAPI.csv.data.headers.length > 1) {
+              // Use the existing `headers` array to create the header row
+              const headerRow = document.createElement("tr");
+
+              
+
+              // Extract and populate the table body with data rows
+              csvData.data.forEach((rowData) => {
+                const tableRow = document.createElement("tr");
+
+                headers.forEach((headerText) => {
+                  const cellData = rowData[headerText];
+                  const tableCell = document.createElement("td");
+                  tableCell.textContent = cellData;
+                  tableRow.appendChild(tableCell);
+                });
+
+                tableBody.appendChild(tableRow);
+              });
+            } else {
+              const cellData = rowData[Object.keys(rowData)[0]].split(";");
+              cellData.forEach((cellText) => {
+                const tableCell = document.createElement("td");
+                tableCell.textContent = cellText;
+                tableRow.appendChild(tableCell);
+              });
+            }
+
+            tableBody.appendChild(tableRow); // Append the row to the table body
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+      // ...
+    </script>
+  </body>
+</html>

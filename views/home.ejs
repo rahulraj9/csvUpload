@@ -2,221 +2,231 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSV File Upload</title>
     <style>
       /* Apply CSS styles to the entire page */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
 
-/* Header styles */
-h1 {
-    color: #333;
-}
+      /* Header styles */
+      h1 {
+        color: #333;
+      }
 
-h2 {
-    color: #555;
-}
+      h2 {
+        color: #555;
+      }
 
-/* Form styles */
-form {
-    background-color: #fff;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
+      /* Form styles */
+      form {
+        background-color: #fff;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
 
-label {
-    display: block;
-    margin-bottom: 10px;
-    color: #333;
-}
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+      }
 
-input[type="file"],
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-}
+      input[type="file"],
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 16px;
+      }
 
-input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 18px;
-}
+      input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 18px;
+      }
 
-input[type="submit"]:hover {
-    background-color: #0056b3;
-}
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
 
-/* Table styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+      /* Table styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 10px; /* Increase padding for better readability */
-    text-align: left;
-}
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px; /* Increase padding for better readability */
+        text-align: left;
+      }
 
-th {
-    background-color: #f2f2f2;
-}
+      th {
+        background-color: #f2f2f2;
+      }
 
-/* Adjust the width of specific columns */
-td:first-child,
-th:first-child {
-    width: 40%; /* Adjust as needed */
-}
+      /* Adjust the width of specific columns */
+      td:first-child,
+      th:first-child {
+        width: 40%; /* Adjust as needed */
+      }
 
-td:nth-child(2),
-th:nth-child(2) {
-    width: 60%; /* Adjust as needed */
-}
+      td:nth-child(2),
+      th:nth-child(2) {
+        width: 60%; /* Adjust as needed */
+      }
 
+      /* Popup styles */
+      #popup-message {
+        display: none;
+        background-color: #007bff;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 999;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
 
-/* Popup styles */
-#popup-message {
-    display: none;
-    background-color: #007bff;
-    color: #fff;
-    padding: 15px;
-    text-align: center;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 999;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
+      #popup-text {
+        margin: 0;
+      }
 
-#popup-text {
-    margin: 0;
-}
+      #ok-button {
+        background-color: #fff;
+        color: #007bff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+      h2 {
+        text-align: center;
+      }
 
-#ok-button {
-    background-color: #fff;
-    color: #007bff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-}
-h2{
-    text-align: center;
-}
-
-#ok-button:hover {
-    background-color: #f2f2f2;
-}
-
+      #ok-button:hover {
+        background-color: #f2f2f2;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Upload form -->
     <h2>Upload a CSV File</h2>
     <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
-        <input type="text" name="name" id="name" placeholder="Enter a name (optional)">
-        <input type="submit" value="Upload">
+      <input type="file" name="csvFile" id="csvFile" accept=".csv" required />
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Enter a name (optional)"
+      />
+      <input type="submit" value="Upload" />
     </form>
 
     <!-- Table to display the list of uploaded CSV files -->
     <h2>List of Uploaded CSV Files</h2>
     <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be populated here using JavaScript -->
-        </tbody>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be populated here using JavaScript -->
+      </tbody>
     </table>
 
     <!-- JavaScript to handle the popup and populate the table -->
     <script>
+      // JavaScript to handle the form submission
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent the default form submission behavior
 
-          // JavaScript to handle the form submission
-          document.getElementById('uploadForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission behavior
+          const formData = new FormData(this); // Create a FormData object
 
-            const formData = new FormData(this); // Create a FormData object
-
-            // Send a POST request to the server
-            fetch('/upload_csv', {
-                method: 'POST',
-                body: formData,
+          // Send a POST request to the server
+          fetch("/upload_csv", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.message === "File uploaded and saved to the database") {
+                alert("Upload completed successfully."); // Display a success message
+                populateTable();
+              } else {
+                alert("Upload failed."); // Display a failure message
+              }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'File uploaded and saved to the database') {
-                    alert('Upload completed successfully.'); // Display a success message
-                    populateTable()
-                } else {
-                    alert('Upload failed.'); // Display a failure message
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                alert('An error occurred during the upload.');
+            .catch((error) => {
+              console.error(error);
+              alert("An error occurred during the upload.");
             });
         });
-    
 
-        // Function to populate the table with data from the /list API
-        function populateTable() {
-            fetch('/list')
-                .then(response => response.json()
-              )
-                .then(data => {
-                    console.log()
-                    if (data.message === 'List of uploaded CSV files') {
-                        const tableBody = document.querySelector('table tbody');
-                        tableBody.innerHTML = ''; // Clear existing table data
+      // Function to populate the table with data from the /list API
+      function populateTable() {
+        fetch("/list")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.message === "List of uploaded CSV files") {
+              const tableBody = document.querySelector("table tbody");
+              tableBody.innerHTML = ""; // Clear existing table data
 
-                        data.data.forEach(file => {
-                            console.log(file)
-                            const row = document.createElement('tr');
-                            const nameCell = document.createElement('td');
-                            const createdAtCell = document.createElement('td');
-                            createdAtCell.textContent = file._id;
-                            nameCell.textContent = file.name;
-                           
-                            row.appendChild(createdAtCell);
-                            row.appendChild(nameCell);
-                           
-                            tableBody.appendChild(row);
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
+              data.data.forEach((file) => {
+                const row = document.createElement("tr");
 
-        // Call the populateTable function when the page loads
-        window.addEventListener('load', populateTable);
+                // Create a link (anchor) element
+                const idLink = document.createElement("a");
+                idLink.href = `/csv/${file._id}`; // Replace with the actual URL
+                idLink.textContent = file._id;
+
+                const nameCell = document.createElement("td");
+                const createdAtCell = document.createElement("td");
+
+                // Append the link to the createdAtCell
+                createdAtCell.appendChild(idLink);
+
+                nameCell.textContent = file.name;
+
+                row.appendChild(createdAtCell);
+                row.appendChild(nameCell);
+
+                tableBody.appendChild(row);
+              });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      // Call the populateTable function when the page loads
+      window.addEventListener("load", populateTable);
     </script>
-</body>
+  </body>
 </html>
