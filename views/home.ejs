@@ -133,6 +133,7 @@
           <!-- Data will be populated here using JavaScript -->
         </tbody>
       </table>
+      <p id="noCsvMessage" style="display: none">No CSV files available.</p>
     </div>
     <!-- JavaScript to handle the popup and populate the table -->
     <script>
@@ -169,7 +170,18 @@
         fetch("/list")
           .then((response) => response.json())
           .then((data) => {
+            const table = document.querySelector("table");
+            const noCsvMessage = document.getElementById("noCsvMessage");
+
             if (data.message === "List of uploaded CSV files") {
+              if (data.data.length === 0) {
+                table.style.display = "none"; // Hide the table
+                noCsvMessage.style.display = "block"; // Show the message
+              } else {
+                table.style.display = "table"; // Show the table
+                noCsvMessage.style.display = "none"; // Hide the message
+              }
+
               const tableBody = document.querySelector("table tbody");
               tableBody.innerHTML = ""; // Clear existing table data
 

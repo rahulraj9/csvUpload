@@ -11,7 +11,10 @@ const uploadCsv = (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
-
+  if (req.file.mimetype !== 'text/csv' || !req.file.originalname.endsWith('.csv')) {
+    return res.status(400).json({ message: 'Uploaded file is not a CSV' });
+  }
+  console.log(req.file)
   const results = [];
   const filePath = req.file.path;
 	const uploadedFileName = req.file.originalname; // Get the original filename with extension
