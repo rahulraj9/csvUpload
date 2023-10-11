@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSV File Upload</title>
     <style>
-
       /* Improved design for the page */
       body {
         font-family: Arial, sans-serif;
@@ -52,7 +51,7 @@
       }
 
       #searchButton:hover {
-        background-color: #478C5F;
+        background-color: #478c5f;
       }
 
       /* Style for the search input box */
@@ -123,18 +122,18 @@
       <button id="searchButton">Search</button>
     </div>
     <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Data will be populated here using JavaScript -->
-      </tbody>
-    </table>
-  </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be populated here using JavaScript -->
+        </tbody>
+      </table>
+    </div>
     <!-- JavaScript to handle the popup and populate the table -->
     <script>
       // JavaScript to handle the form submission
@@ -204,6 +203,7 @@
 
       // Call the populateTable function when the page loads
       window.addEventListener("load", populateTable);
+
       // Function to search files based on input
       function searchFiles() {
         const input = document
@@ -212,10 +212,12 @@
         const tableRows = document.querySelectorAll("table tbody tr");
 
         tableRows.forEach((row) => {
+          const idCell = row.querySelector("td:first-child");
           const nameCell = row.querySelector("td:last-child");
+          const id = idCell.textContent.toLowerCase();
           const name = nameCell.textContent.toLowerCase();
 
-          if (name.includes(input)) {
+          if (id.includes(input) || name.includes(input)) {
             row.style.display = "";
           } else {
             row.style.display = "none";
