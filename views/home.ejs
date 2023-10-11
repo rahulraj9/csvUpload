@@ -146,6 +146,17 @@
 
     <!-- Table to display the list of uploaded CSV files -->
     <h2>List of Uploaded CSV Files</h2>
+    <!-- Add a search input and button above the table -->
+    <div>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by Name"
+        oninput="searchFiles()"
+      />
+      <button id="searchButton">Search</button>
+    </div>
+
     <table>
       <thead>
         <tr>
@@ -227,6 +238,29 @@
 
       // Call the populateTable function when the page loads
       window.addEventListener("load", populateTable);
+      // Function to search files based on input
+      function searchFiles() {
+        const input = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const tableRows = document.querySelectorAll("table tbody tr");
+
+        tableRows.forEach((row) => {
+          const nameCell = row.querySelector("td:last-child");
+          const name = nameCell.textContent.toLowerCase();
+
+          if (name.includes(input)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      }
+
+      // Add an event listener to the search button
+      document
+        .getElementById("searchButton")
+        .addEventListener("click", searchFiles);
     </script>
   </body>
 </html>
